@@ -13,8 +13,7 @@
 	Configuration cfg = new Configuration();
 	cfg.configure("Hibernate.cfg.xml");
 	SessionFactory sf = cfg.buildSessionFactory();
-	Session sess = sf.openSession();
-	
+	Session sess = sf.openSession();	
 	Transaction t=sess.beginTransaction();
 	
 	Query query = sess.createQuery("from User");
@@ -35,15 +34,20 @@
 		out.println(st + "<br>");
 	}
 	out.println("<br/>");
-	
+
+	query = sess.createQuery("from User U order by U.name asc");
+	List<User> list4 = (List<User>) query.list();
+	out.println("List of User with criteria::"+"<br>");
+	for(User st : list4){
+		out.println(st.getName()+"<br>");
+	}
+	out.println("<br/>");	
 
 	query = sess.createQuery("select count(*) from User");
 	List<Integer> list2= query.list();
 	out.println("Total Names: "+"<br>");
 		out.println(list2.get(0) + "<br>");
-	out.println("<br/>");
-	
-	
+	out.println("<br/>");	
 
 	query = sess.createQuery("from User U where U.id=:id");
 	query.setInteger("id",2);
@@ -56,11 +60,6 @@
 	t.commit();
 	sess.close();
 	sf.close();
-	
-	
-
-
 %>
-
 </body>
 </html>
